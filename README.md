@@ -1,19 +1,38 @@
 KnockoutPager
 =============
 By No means a finished product! 
-JavaScript class that pages data from an observable array
-Create one like so:
-var pager = new knockoutPager(ko, swapkidsstuff.viewModel.sizes, 5, 0) ;
-The object has the following properties:
-	• pageSize : observable that represents the number of items in a page
-	• start : index of the item in the array to start with
-	• pages: observable array of page objects 
-	• currentPage: computed observable that represents the current page
-	• pagedData: computed observable that actually has the paged data from the original array.
-And the following methods:
-	• Next: advance currentPage property to the next page
-	• Back: move currentPage property back one
+Extends KnockoutJS ObservableArray
+Adds properties:
+pageSize, start, pages, isPaged, and currentIndex.
+In addition adds computed observables currentPage and pagedData as well as methods
+Next, Back, and SetPage.
 
-SetPage: set the page number directly.
+Binding may look like this if array is named "sizes"
 
+<table>
+                <thead>
+                    <tr>
+                        <th>Culture</th>
+                        <th>Sex</th>
+                        <th>Size</th>
+                    </tr>
+                </thead>
+                <tbody data-bind="foreach: sizes.pagedData()">
+                    <tr>
+                        <td data-bind="text: culture.name"></td>
+                        <td data-bind="text: sex.name"></td>
+                        <td data-bind="text: size"></td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td>
+                            <a data-bind="click: sizes.Next(), attr:{href:'#'}">Next</a>
+                        </td>
+                        <td>
+                            <a data-bind="click: sizes.Back(), attr:{href:'#'}">Back</a>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
 
