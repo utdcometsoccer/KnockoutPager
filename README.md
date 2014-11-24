@@ -8,6 +8,29 @@ In addition adds computed observables currentPage and pagedData as well as metho
 Next, Back, and SetPage.
 
 Binding may look like this if array is named "sizes"
-
-%3Ctable%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3Cthead%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3Ctr%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3Cth%3ECulture%3C%2Fth%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3Cth%3ESex%3C%2Fth%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3Cth%3ESize%3C%2Fth%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3C%2Ftr%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3C%2Fthead%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3Ctbody%20data-bind%3D%22foreach%3A%20sizes.pagedData()%22%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3Ctr%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3Ctd%20data-bind%3D%22text%3A%20culture.name%22%3E%3C%2Ftd%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3Ctd%20data-bind%3D%22text%3A%20sex.name%22%3E%3C%2Ftd%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3Ctd%20data-bind%3D%22text%3A%20size%22%3E%3C%2Ftd%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3C%2Ftr%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3C%2Ftbody%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3Ctfoot%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3Ctr%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3Ctd%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3Ca%20data-bind%3D%22click%3A%20sizes.Next()%2C%20attr%3A%7Bhref%3A%27%23%27%7D%22%3ENext%3C%2Fa%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3C%2Ftd%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3Ctd%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3Ca%20data-bind%3D%22click%3A%20sizes.Back()%2C%20attr%3A%7Bhref%3A%27%23%27%7D%22%3EBack%3C%2Fa%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3C%2Ftd%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3C%2Ftr%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3C%2Ftfoot%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%3C%2Ftable%3E
-
+&lt;table&gt;
+                &lt;thead&gt;
+                    &lt;tr&gt;
+                        &lt;th&gt;Culture&lt;/th&gt;
+                        &lt;th&gt;Sex&lt;/th&gt;
+                        &lt;th&gt;Size&lt;/th&gt;
+                    &lt;/tr&gt;
+                &lt;/thead&gt;
+                &lt;tbody data-bind=&quot;foreach: sizes.pagedData()&quot;&gt;
+                    &lt;tr&gt;
+                        &lt;td data-bind=&quot;text: culture.name&quot;&gt;&lt;/td&gt;
+                        &lt;td data-bind=&quot;text: sex.name&quot;&gt;&lt;/td&gt;
+                        &lt;td data-bind=&quot;text: size&quot;&gt;&lt;/td&gt;
+                    &lt;/tr&gt;
+                &lt;/tbody&gt;
+                &lt;tfoot&gt;
+                    &lt;tr&gt;
+                        &lt;td&gt;
+                            &lt;a data-bind=&quot;click: sizes.Next(), attr:{href:&#39;#&#39;}&quot;&gt;Next&lt;/a&gt;
+                        &lt;/td&gt;
+                        &lt;td&gt;
+                            &lt;a data-bind=&quot;click: sizes.Back(), attr:{href:&#39;#&#39;}&quot;&gt;Back&lt;/a&gt;
+                        &lt;/td&gt;
+                    &lt;/tr&gt;
+                &lt;/tfoot&gt;
+            &lt;/table&gt;
