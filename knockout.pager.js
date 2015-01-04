@@ -1,4 +1,4 @@
-function isObservableArray(obj) {
+﻿function isObservableArray(obj) {
     return ko.isObservable(obj) && obj().constructor === Array;
 }
 
@@ -23,22 +23,21 @@ ko.observableArray.fn.paginate = function () {
         self.currentIndex = ko.observable(0);
     }
     if (!self.currentPage) {
-        self.currentPage = ko.computed(function () {
-            return self.pages()[self.currentIndex()];
-        }, self);
+        self.currentPage = ko.observable();
     }
 
     if (!self.pagedData) {
         self.pagedData = ko.computed(function () {
             var currentPage = self.currentPage();
             if (currentPage) {
+                currentPage.selected(true);
                 return self.slice(currentPage.start, currentPage.end);
             }
         }, self);
     }
     var pageSize = self.pageSize();
     var length = self().length;
-    var pageCount = length / pageSize;
+    var pageCount = Math.max(length / pageSize, 1);
     for (var pageStart = 0; pageStart < pageCount; pageStart++) {
         var pageNumber = pageStart + 1;
         var pageEnd = pageNumber * pageSize;
@@ -46,8 +45,12 @@ ko.observableArray.fn.paginate = function () {
         self.pages.push({
             page: pageNumber,
             start: pageStart * pageSize,
-            end: pageEnd
+            end: pageEnd,
+            selected: ko.observable(false)
         });
+    }
+    if (self.pages().length >= 1) {
+        self.currentPage(self.pages()[0]);
     }
     self.isPaged(true);
 };
@@ -71,8 +74,12 @@ ko.observableArray.fn.Next = function () {
     var self = this;
     if (isObservableArray(self)) {
         self.ensurePaging();
-        if (self.pages().length) {
-            self.currentIndex(self.currentIndex() < self.pages().length - 1 ? self.currentIndex() + 1 : self.pages().length - 1);
+        var length = self.pages().length;
+        if (length) {
+            if (self.currentPage().page < length) {
+                self.currentPage().selected(false);
+                self.currentPage(self.pages()[self.currentPage().page]);
+                }
         }
 
         else {
@@ -81,11 +88,15 @@ ko.observableArray.fn.Next = function () {
     }
 };
 
-ko.observableArray.fn.Back = function () {
+ko.observableArray.fn.Previous = function () {
     var self = this;
     if (isObservableArray(self)) {
         self.ensurePaging();
-        self.currentIndex(self.currentIndex() > 0 ? self.currentIndex() - 1 : 0);
+        if (self.currentPage().page - 2 >= 0) {
+            self.currentPage().selected(false);
+            self.currentPage(self.pages()[self.currentPage().page - 2]);
+            self.currentPage().selected(true);
+        }
     }
 };
 
@@ -93,7 +104,7 @@ ko.observableArray.fn.setPage = function (page) {
     var self = this;
     if (isObservableArray(self)) {
         self.ensurePaging();
-        self.currentIndex(page >= 0 && page < self.pages().length ? page : self.currentIndex());
+        self.currentPage(page >= 0 && page < self.pages().length ? self.pages()[page] : self.currentPage());
     }
 };
 
@@ -103,7 +114,7 @@ ko.paginateAll = function (target, ignoreList) {
             if (-1 === ignoreList.indexof(property)) {
                 var obj = target[property];
                 if (ko.isObservable(obj) && obj().constructor === Array) {
-                    obj.paginate();
+                    obj.ensurePaging();
                 }
             }
         }
@@ -113,7 +124,7 @@ ko.paginateAll = function (target, ignoreList) {
         for (var property in target) {
             var obj = target[property];
             if (ko.isObservable(obj) && obj() && obj().constructor === Array) {
-                obj.paginate();
+                obj.ensurePaging();
             }
         }
     }
